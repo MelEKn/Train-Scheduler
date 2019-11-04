@@ -22,7 +22,7 @@ $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
     var trainName = $("#train-name-input").val().trim();
     var dest = $("#dest-input").val().trim();
-    var firstTrainTime = moment($("#first-time-input").val().trim(), "HH:mm").format("X");
+    var firstTrainTime = moment($("#first-time-input").val().trim(), "HH:mm").format("HH:mm");
     var freq = $("#freq-input").val().trim();
 
     console.log("trainName is " + trainName);
