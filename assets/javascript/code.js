@@ -61,38 +61,30 @@ database.ref().on("child_added", function (childSnapshot) {
         $("<td>").text(trainFreq)
     );
 
+    //sets nextTrain equal to the first train arrival
     var nextTrain = moment(firstTrain, "HH:mm");
-    var now = moment().format("HH:mm");
-    console.log("now is " + now);
-    //   var difference = now.diff(firstTrain, "minutes");
-    //   console.log("now.diff(firstTrain) is " + difference);
     console.log("firstTrain is " + firstTrain);
 
     console.log("nextTrain.diff(moment(), 'minutes') is " + nextTrain.diff(moment(), "minutes"));
     console.log("moment().diff(nextTrain, 'minutes'); is " + moment().diff(nextTrain, "minutes"));
 
     console.log("to: " + moment().to(nextTrain));
-    //  console.log(nextTrain.toNow());
 
-    //   if(),
-
-    while(nextTrain.diff(moment(),"minutes") < 0){
+    //Sets nextTrain equal to the next time the train will come, based on start time, frequency, and current time
+    while (nextTrain.diff(moment(), "minutes") < 0) {
         nextTrain.add(trainFreq, "minutes");
         console.log("nextTrain is " + nextTrain.format("HH:mm"));
     }
 
     var minAway = nextTrain.diff(moment(), "minutes");
-    //moment().diff(nextTrain, "minutes");
 
     console.log("minAway is " + minAway);
 
-    
+    //Add the newly-calculated nextTrain and minAway to the newRow
     newRow.append(
         $("<td>").text(nextTrain.format("HH:mm")),
         $("<td>").text(minAway)
     );
-
-
 
     // Append the new row to the table
     $("#train-table > tbody").append(newRow);
