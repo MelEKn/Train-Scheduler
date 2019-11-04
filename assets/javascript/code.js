@@ -55,13 +55,44 @@ database.ref().on("child_added", function (childSnapshot) {
     var trainFreq = childSnapshot.val().freq;
 
     // Create the new row
-  var newRow = $("<tr>").append(
-    $("<td>").text(trainName),
-    $("<td>").text(trainDest),
-    $("<td>").text(trainFreq),
-    $("<td>").text(firstTrain),
-    $("<td>").text("Minutes Away tbd")
-  );
+    var newRow = $("<tr>").append(
+        $("<td>").text(trainName),
+        $("<td>").text(trainDest),
+        $("<td>").text(trainFreq)
+    );
+
+    var nextTrain = moment(firstTrain, "HH:mm");
+    var now = moment().format("HH:mm");
+    console.log("now is " + now);
+    //   var difference = now.diff(firstTrain, "minutes");
+    //   console.log("now.diff(firstTrain) is " + difference);
+    console.log("firstTrain is " + firstTrain);
+
+    console.log("nextTrain.diff(moment(), 'minutes') is " + nextTrain.diff(moment(), "minutes"));
+    console.log("moment().diff(nextTrain, 'minutes'); is " + moment().diff(nextTrain, "minutes"));
+
+    console.log("to: " + moment().to(nextTrain));
+    //  console.log(nextTrain.toNow());
+
+    //   if(),
+
+    while(nextTrain.diff(moment(),"minutes") < 0){
+        nextTrain.add(trainFreq, "minutes");
+        console.log("nextTrain is " + nextTrain.format("HH:mm"));
+    }
+
+    var minAway = nextTrain.diff(moment(), "minutes");
+    //moment().diff(nextTrain, "minutes");
+
+    console.log("minAway is " + minAway);
+
+    
+    newRow.append(
+        $("<td>").text(nextTrain.format("HH:mm")),
+        $("<td>").text(minAway)
+    );
+
+
 
     // Append the new row to the table
     $("#train-table > tbody").append(newRow);
