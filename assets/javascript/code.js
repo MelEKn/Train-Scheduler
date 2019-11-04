@@ -29,4 +29,42 @@ $("#add-train-btn").on("click", function (event) {
     console.log("dest is " + dest);
     console.log("firstTrainTime is " + firstTrainTime);
     console.log("freq is " + freq);
+
+    //local "temporary" object of train data
+    var newTrain = {
+        name: trainName,
+        dest: dest,
+        first: firstTrainTime,
+        freq: freq
+    };
+
+    //upload train data to database
+    database.ref().push(newTrain);
+
+    console.log("newTrain.name is " + newTrain.name);
+
 });
+
+database.ref().on("child_added", function (childSnapshot) {
+    console.log(childSnapshot.val());
+
+    //Store everything from the childSnapshot into a variable
+    var trainName = childSnapshot.val().name;
+    var trainDest = childSnapshot.val().dest;
+    var firstTrain = childSnapshot.val().first;
+    var trainFreq = childSnapshot.val().freq;
+
+    // Create the new row
+  var newRow = $("<tr>").append(
+    $("<td>").text(trainName),
+    $("<td>").text(trainDest),
+    $("<td>").text(trainFreq),
+    $("<td>").text(firstTrain),
+    $("<td>").text("Minutes Away tbd")
+  );
+
+    // Append the new row to the table
+    $("#train-table > tbody").append(newRow);
+});
+
+
